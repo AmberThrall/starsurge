@@ -2,15 +2,21 @@
     entities: {
         10: (
             components: {
-                "starsurge::map::Model": (path: "models/tree_oak.glb"),
-                "starsurge::map::Position": ( x: 0, y: 0 ),
+                "starsurge::map::Model": (path: "models/tree_pineTallD_detailed.glb"),
+                "starsurge::map::Position": ( x: 2, y: 2 ),
             }
         ),
         11: (
             components: {
-                "starsurge::map::Model": (path: "models/tree_oak.glb"),
-                "starsurge::map::Position": ( x: 1, y: 1 ),
+                "starsurge::map::Model": (path: "models/tree_pineTallD_detailed.glb"),
+                "starsurge::map::Position": ( x: 2, y: 3 ),
             }
         ),
+        12: (
+            components: {
+                "starsurge::map::Model": (path: "models/tree_oak.glb"),
+                "starsurge::map::Position": ( x: 3, y: 2 ),
+            }
+        )
     }
 )

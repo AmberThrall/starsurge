@@ -5,24 +5,18 @@
         colormap: "maps/test_map_colormap.png",
         max_altitude: 10.0,
     ),
-    entities: {
-        10: (
-            components: {
-                "starsurge::map::Model": (path: "models/tree_pineTallD_detailed.glb"),
-                "starsurge::map::Position": ( x: 0, y: 0 ),
-            }
+    entities: [
+        (
+            model: Some("models/tree_pineTallD_detailed.glb"),
         ),
-        11: (
-            components: {
-                "starsurge::map::Model": (path: "models/tree_pineTallD_detailed.glb"),
-                "starsurge::map::Position": ( x: 1, y: 1 ),
-            }
+        (
+            model: Some("models/tree_pineTallD_detailed.glb"),
+            position: (x: 1, y: 1),
         ),
-        12: (
-            components: {
-                "starsurge::map::Model": (path: "models/tree_oak.glb"),
-                "starsurge::map::Position": ( x: 1, y: 2 ),
-            }
-        )
-    }
+        (
+            model: Some("models/tree_oak.glb"),
+            position: (x: 1, y: 2),
+            angle: 45.0,
+        ),
+    ]
 )

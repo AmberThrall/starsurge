@@ -1,6 +1,5 @@
 use bevy::{
     prelude::*,
-    scene::{DynamicScene, DynamicEntity},
 };
 use bevy_common_assets::ron::RonAssetPlugin;
 use super::{
@@ -13,8 +12,9 @@ use super::{
 pub struct DontUnload;
 
 /// Component for terrain quad position. (0,0) is the center of the map.
-#[derive(Component, Reflect, Default)]
+#[derive(Component, Reflect, serde::Deserialize, bevy::reflect::TypeUuid, Default, Copy, Clone, PartialEq, Eq)]
 #[reflect(Component)]
+#[uuid = "48613d5d-f1d2-46b8-8d9f-026c27fe8700"]
 pub struct Position {
     pub x: i32,
     pub y: i32,
@@ -27,6 +27,10 @@ impl Position {
         }
     }
 }
+
+/// Component for an entities angle about the y-axis.
+#[derive(Component, Reflect, Default, Copy, Clone, PartialEq)]
+pub struct Angle(pub f32);
 
 /// Helper component for models.
 #[derive(Component, Reflect, Default)]
@@ -101,16 +105,50 @@ pub struct MapTerrainData {
     pub max_altitude: f32,
 }
 
+/// Maps' entity data structure
+#[derive(serde::Deserialize, bevy::reflect::TypeUuid)]
+#[uuid = "d1faf050-efdb-474e-85cc-353e8d8c6e00"]
+pub struct MapEntityData {
+    /// Entity's grid position
+    #[serde(default)]
+    pub position: Position,
+
+    /// Optional model path
+    #[serde(default)]
+    pub model: Option<String>,
+
+    /// Angle of entity about y-axis
+    #[serde(default)]
+    pub angle: f32,
+}
+
+impl MapEntityData {
+    pub fn spawn(&self, commands: &mut Commands) {
+        let entity = commands.spawn_empty().id();
+        commands.entity(entity).insert(self.position);
+        commands.entity(entity).insert(Angle(self.angle));
+        if let Some(model) = &self.model {
+            commands.entity(entity).insert(Model::new(&model));
+        }
+    }
+}
+
 /// Map's data structure.
 #[derive(serde::Deserialize, bevy::reflect::TypeUuid)]
 #[uuid = "e222d1d1-1044-4a49-8d1f-80d796f8645b"]
 pub struct MapData {
     /// Name of the map
     pub name: String,
+
     /// Terrain map data
     pub terrain: MapTerrainData,
+
     /// File name of a bevy dynamic scene file.
-    pub entities: Vec<DynamicEntity>,
+    pub entities: Vec<MapEntityData>,
+
+    /// Optional dynamic scene to load
+    #[serde(default)]
+    pub dynamic_scene: Option<String>,
 }
 
 pub struct MapPlugin;
@@ -123,7 +161,8 @@ impl Plugin for MapPlugin {
             .add_plugin(RonAssetPlugin::<MapData>::new(&["map", "map.ron"]))
             .add_system(map_loader)
             .add_system(load_models)
-            .add_system(handle_positions);
+            .add_system(handle_positions)
+            .add_system(handle_angles);
     }
 }
 
@@ -159,12 +198,17 @@ fn map_loader(
                     ));
                 
                     // Load the scene
-                    // commands.spawn(DynamicSceneBundle {
-                    //     scene: DynamicScene {
+                    for entity in data.entities.iter() {
+                        entity.spawn(&mut commands);
+                    }
 
-                    //     },
-                    //     ..default()
-                    // });
+                    // Load the dynamic scene?
+                    if let Some(path) = &data.dynamic_scene {
+                        commands.spawn(DynamicSceneBundle {
+                            scene: asset_server.load(path),
+                            ..default()
+                        });
+                    }
 
                     // Update the state and clean up
                     map.name = data.name.clone();
@@ -197,5 +241,13 @@ fn handle_positions(
             let world_pos = terrain.get_world_position(pos);
             transform.translation = world_pos;
         }
+    }
+}
+
+fn handle_angles(
+    mut query: Query<(&mut Transform, &Angle)>
+) {
+    for (mut transform, angle) in query.iter_mut() {
+        transform.rotation = Quat::from_rotation_y(angle.0);
     }
 }

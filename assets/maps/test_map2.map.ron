@@ -5,5 +5,14 @@
         colormap: "maps/test_map_colormap.png",
         max_altitude: 10.0,
     ),
-    scene_path: "maps/test_map2.scn.ron",
+    entities: [
+        (
+            model: Some("models/tree_oak.glb"),
+        ),
+        (
+            model: Some("models/tree_oak.glb"),
+            position: (x: 1, y: 1),
+        )
+    ],
+    dynamic_scene: Some("maps/test_map2.scn.ron"),
 )

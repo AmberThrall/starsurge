@@ -1,6 +1,6 @@
 use bevy::{
     diagnostic::{FrameTimeDiagnosticsPlugin},
-    prelude::*, 
+    prelude::*,
 };
 use starsurge::*;
 
