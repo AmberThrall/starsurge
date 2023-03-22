@@ -13,6 +13,8 @@ opt-level = 3
 
 [dependencies]
 bevy = "0.10.0"
+bevy_common_assets = { version="0.6.0", features=["ron"] }
+serde = "1.0.158"
 
 [[bin]]
 name = "client"

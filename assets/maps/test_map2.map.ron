@@ -1,0 +1,9 @@
+(
+    name: "Test Map 2",
+    terrain: (
+        heightmap: "maps/test_map_heightmap.png",
+        colormap: "maps/test_map_colormap.png",
+        max_altitude: 10.0,
+    ),
+    scene_path: "maps/test_map2.scn.ron",
+)

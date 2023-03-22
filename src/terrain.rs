@@ -2,24 +2,9 @@ use bevy::{
     prelude::*,
     render::{mesh::Indices, render_resource::PrimitiveTopology},
 };
+use super::Position;
 
 pub const CELL_SIZE: Vec3 = Vec3::ONE;
-
-/// Component for terrain quad position. (0,0) is the center of the map.
-#[derive(Component, Reflect, Default)]
-#[reflect(Component)]
-pub struct Position {
-    pub x: i32,
-    pub y: i32,
-}
-
-impl Position {
-    pub fn new(x: i32, y: i32) -> Self {
-        Self {
-            x, y,
-        }
-    }
-}
 
 #[derive(Resource)]
 pub struct TerrainMaterial(Handle<StandardMaterial>);
@@ -258,8 +243,7 @@ impl Plugin for TerrainPlugin {
     fn build(&self, app: &mut App) {
        app.add_startup_system(setup_material)
             .add_system(build_terrains.before(generate_mesh))
-            .add_system(generate_mesh)
-            .add_system(handle_positions);
+            .add_system(generate_mesh);
     }
 }
 
@@ -309,17 +293,5 @@ fn generate_mesh(
             material: material.0.clone_weak(),
             ..default()
         });
-    }
-}
-
-fn handle_positions(
-    terrains: Query<&Terrain>,
-    mut query: Query<(&mut Transform, &Position)>
-) {
-    if let Ok(terrain) = terrains.get_single() {
-        for (mut transform, pos) in query.iter_mut() {
-            let world_pos = terrain.get_world_position(pos);
-            transform.translation = world_pos;
-        }
     }
 }

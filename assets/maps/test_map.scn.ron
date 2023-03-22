@@ -1,0 +1,22 @@
+(
+    entities: {
+        10: (
+            components: {
+                "starsurge::map::Model": (path: "models/tree_pineTallD_detailed.glb"),
+                "starsurge::map::Position": ( x: 0, y: 0 ),
+            }
+        ),
+        11: (
+            components: {
+                "starsurge::map::Model": (path: "models/tree_pineTallD_detailed.glb"),
+                "starsurge::map::Position": ( x: 1, y: 1 ),
+            }
+        ),
+        12: (
+            components: {
+                "starsurge::map::Model": (path: "models/tree_oak.glb"),
+                "starsurge::map::Position": ( x: 1, y: 2 ),
+            }
+        )
+    }
+)
