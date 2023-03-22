@@ -5,18 +5,22 @@
         colormap: "maps/test_map_colormap.png",
         max_altitude: 10.0,
     ),
-    entities: [
+    objects: [
         (
-            model: Some("models/tree_pineTallD_detailed.glb"),
+            object: Decor("models/tree_pineTallD_detailed.glb"),
         ),
         (
-            model: Some("models/tree_pineTallD_detailed.glb"),
+            object: Decor("models/tree_pineTallD_detailed.glb"),
+            position: (x: 1, y: 0),
+        ),
+        (
+            object: Decor("models/tree_pineTallD_detailed.glb"),
             position: (x: 1, y: 1),
         ),
         (
-            model: Some("models/tree_oak.glb"),
+            object: Decor("models/tree_oak.glb"),
             position: (x: 1, y: 2),
-            angle: 15.0,
+            angle: 30.0,
         ),
     ]
 )

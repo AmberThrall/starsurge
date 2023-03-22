@@ -2,9 +2,11 @@ use bevy::{
     prelude::*,
 };
 use bevy_common_assets::ron::RonAssetPlugin;
-use super::{
+use crate::{
     Terrain,
-    TerrainBuilder
+    TerrainBuilder,
+    GameObject,
+    SpawnEvent,
 };
 
 /// Comopnent to mark entities that should not be unloaded on map change.
@@ -108,27 +110,26 @@ pub struct MapTerrainData {
 /// Maps' entity data structure
 #[derive(serde::Deserialize, bevy::reflect::TypeUuid)]
 #[uuid = "d1faf050-efdb-474e-85cc-353e8d8c6e00"]
-pub struct MapEntityData {
-    /// Entity's grid position
+pub struct ObjectData {
+    /// Object's grid position
     #[serde(default)]
     pub position: Position,
-
-    /// Optional model path
-    #[serde(default)]
-    pub model: Option<String>,
 
     /// Angle of entity about y-axis
     #[serde(default)]
     pub angle: f32,
+
+    /// Object data
+    #[serde(default)]
+    pub object: GameObject,
 }
 
-impl MapEntityData {
-    pub fn spawn(&self, commands: &mut Commands) {
-        let entity = commands.spawn_empty().id();
-        commands.entity(entity).insert(self.position);
-        commands.entity(entity).insert(Angle(self.angle));
-        if let Some(model) = &self.model {
-            commands.entity(entity).insert(Model::new(&model));
+impl ObjectData {
+    pub fn to_spawn_event(self) -> SpawnEvent {
+        SpawnEvent {
+            position: self.position,
+            angle: self.angle,
+            object: self.object,
         }
     }
 }
@@ -144,7 +145,7 @@ pub struct MapData {
     pub terrain: MapTerrainData,
 
     /// File name of a bevy dynamic scene file.
-    pub entities: Vec<MapEntityData>,
+    pub objects: Vec<ObjectData>,
 
     /// Optional dynamic scene to load
     #[serde(default)]
@@ -168,8 +169,9 @@ impl Plugin for MapPlugin {
 
 fn map_loader(
     mut commands: Commands,
+    mut spawn_ev: EventWriter<SpawnEvent>,
     asset_server: Res<AssetServer>,
-    map_data: Res<Assets<MapData>>,
+    mut map_data: ResMut<Assets<MapData>>,
     map_res: Option<ResMut<Map>>,
     unload_query: Query<Entity, (Without<Window>, Without<DontUnload>)>,
 ) {
@@ -198,7 +200,7 @@ fn map_loader(
                 map.state = MapAssetState::NotLoaded;
             },
             MapAssetState::NotLoaded => {
-                if let Some(data) = map_data.get(&map.data) {
+                if let Some(data) = map_data.get_mut(&map.data) {
                     // Spawn the terrain
                     commands.spawn((
                         TerrainBuilder {
@@ -210,8 +212,8 @@ fn map_loader(
                     ));
                 
                     // Load the scene
-                    for entity in data.entities.iter() {
-                        entity.spawn(&mut commands);
+                    while let Some(object_data) = data.objects.pop() {
+                        spawn_ev.send(object_data.to_spawn_event());
                     }
 
                     // Load the dynamic scene?

@@ -27,7 +27,6 @@ fn main() {
 
 fn setup(
     mut commands: Commands,
-    mut spawn_ev: EventWriter<SpawnEvent>,
     asset_server: Res<AssetServer>,
 ) {
     // Light
@@ -55,11 +54,4 @@ fn setup(
 
     // Map
     commands.insert_resource(Map::from_handle(asset_server.load("maps/test_map.map.ron")));
-
-    // Test spawner
-    spawn_ev.send(SpawnEvent {
-        object: Object::Decor("models/tree_palmTall.glb".to_string()),
-        position: Position::new(3, 3),
-        ..default()
-    });
 }
