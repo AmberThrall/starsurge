@@ -7,7 +7,7 @@
     ),
     entities: [
         (
-            model: Some("models/tree_oak.glb"),
+            model: Some("models/tree_pineTallD_detailed.glb"),
         ),
         (
             model: Some("models/tree_oak.glb"),

@@ -16,7 +16,7 @@
         (
             model: Some("models/tree_oak.glb"),
             position: (x: 1, y: 2),
-            angle: 45.0,
+            angle: 15.0,
         ),
     ]
 )

@@ -2,7 +2,7 @@
     entities: {
         10: (
             components: {
-                "starsurge::map::Model": (path: "models/tree_pineTallD_detailed.glb"),
+                "starsurge::map::Model": (path: "models/tree_oak.glb"),
                 "starsurge::map::Position": ( x: 2, y: 2 ),
             }
         ),

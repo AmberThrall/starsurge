@@ -182,6 +182,18 @@ fn map_loader(
                     commands.entity(entity).despawn();
                 }
 
+                // Reload the map files
+                if let Some(map_path) = asset_server.get_handle_path(&map.data) {
+                    asset_server.reload_asset(map_path.path()); // .map.ron file
+                }
+                
+                // For some reason bevy crashes when reloading a DynamicScene.
+                // if let Some(data) = map_data.get(&map.data) {
+                //     if let Some(path) = &data.dynamic_scene {
+                //         asset_server.reload_asset(path); // .scn.ron file
+                //     }
+                // }
+
                 // Update the map's state.
                 map.state = MapAssetState::NotLoaded;
             },
