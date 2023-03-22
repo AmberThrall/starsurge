@@ -8,11 +8,11 @@ use super::{
 };
 
 /// Comopnent to mark entities that should not be unloaded on map change.
-#[derive(Component)]
+#[derive(Component, Debug)]
 pub struct DontUnload;
 
 /// Component for terrain quad position. (0,0) is the center of the map.
-#[derive(Component, Reflect, serde::Deserialize, bevy::reflect::TypeUuid, Default, Copy, Clone, PartialEq, Eq)]
+#[derive(Component, Debug, Reflect, serde::Deserialize, bevy::reflect::TypeUuid, Default, Copy, Clone, PartialEq, Eq)]
 #[reflect(Component)]
 #[uuid = "48613d5d-f1d2-46b8-8d9f-026c27fe8700"]
 pub struct Position {
@@ -29,7 +29,7 @@ impl Position {
 }
 
 /// Component for an entities angle about the y-axis.
-#[derive(Component, Reflect, Default, Copy, Clone, PartialEq)]
+#[derive(Component, Debug, Reflect, Default, Copy, Clone, PartialEq)]
 pub struct Angle(pub f32);
 
 /// Helper component for models.

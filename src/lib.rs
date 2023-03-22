@@ -4,11 +4,14 @@ pub mod bevy_config;
 pub mod terrain;
 pub mod map;
 pub mod map_registry;
+pub mod spawner;
 
 pub use crate::bevy_config::BevyConfigPlugin;
 pub use crate::terrain::*;
 pub use crate::map::*;
 pub use crate::map_registry::*;
+pub use crate::spawner::*;
+
 pub struct GamePlugin;
 
 impl Plugin for GamePlugin {
@@ -20,6 +23,7 @@ impl Plugin for GamePlugin {
         app.add_plugin(BevyConfigPlugin)
             .add_plugin(MapPlugin)
             .add_plugin(TerrainPlugin)
+            .add_plugin(SpawnerPlugin)
             .insert_resource(map_registry);
     }
 }
