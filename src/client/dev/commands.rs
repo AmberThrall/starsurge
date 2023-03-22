@@ -1,12 +1,12 @@
 use bevy::{
     prelude::*,
     diagnostic::{Diagnostics, FrameTimeDiagnosticsPlugin},
+    pbr::wireframe::WireframeConfig,
 };
 use bevy_console::{reply, reply_ok, reply_failed, AddConsoleCommand, ConsoleCommand};
 use clap::Parser;
 use crate::Map;
 use crate::MapRegistry;
-use crate::WireframeStatus;
 
 /// Displays the current fps
 #[derive(Parser, ConsoleCommand)]
@@ -98,12 +98,12 @@ fn reload_asset_command(
 struct WireframeCommand;
 
 fn wireframe_command(
-    mut wireframe_status: ResMut<WireframeStatus>,
+    mut wireframe_config: ResMut<WireframeConfig>,
     mut log: ConsoleCommand<WireframeCommand>,
 ) {
     if let Some(Ok(_)) = log.take() {
-        wireframe_status.0 = !wireframe_status.0;
-        reply!(log, "Turning wireframe {}", if wireframe_status.0 { "on" } else { "off" });
+        wireframe_config.global = !wireframe_config.global;
+        reply!(log, "Turning wireframe {}", if wireframe_config.global { "on" } else { "off" });
     }
 }
 
