@@ -49,8 +49,14 @@ pub enum MapAssetState {
     Loaded,
 }
 
+impl Default for MapAssetState {
+    fn default() -> Self {
+        MapAssetState::NotLoaded
+    }
+}
+
 /// Resource for handling the current map.
-#[derive(Resource)]
+#[derive(Resource, Default)]
 pub struct Map {
     pub data: Handle<MapData>,
     name: String,
@@ -112,6 +118,7 @@ impl Plugin for MapPlugin {
     fn build(&self, app: &mut App) {
         app.register_type::<Model>()
             .register_type::<Position>()
+            .insert_resource(Map::default())
             .add_plugin(RonAssetPlugin::<MapData>::new(&["map", "map.ron"]))
             .add_system(map_loader)
             .add_system(load_models)

@@ -14,6 +14,9 @@ opt-level = 3
 [dependencies]
 bevy = "0.10.0"
 bevy_common_assets = { version="0.6.0", features=["ron"] }
+bevy_console = "0.7.0"
+bevy_egui = "0.20.1"
+clap = "4.1.10"
 serde = "1.0.158"
 
 [[bin]]
