@@ -45,7 +45,7 @@ impl Model {
 /// MapAsset's current state.
 pub enum MapAssetState {
     NotLoaded,
-    Loading,
+    ChangingMap,
     Loaded,
 }
 
@@ -77,12 +77,12 @@ impl Map {
     pub fn load(&mut self, handle: Handle<MapData>) {
         self.data = handle;
         self.name = String::default();
-        self.state = MapAssetState::Loading;
+        self.state = MapAssetState::ChangingMap;
     }
 
     /// Reloads the current map.
     pub fn reload(&mut self) {
-        self.state = MapAssetState::Loading;
+        self.state = MapAssetState::ChangingMap;
     }
 
     /// Returns the current map name.
@@ -136,8 +136,8 @@ fn map_loader(
     if let Some(mut map) = map_res {
         match map.state {
             MapAssetState::Loaded => {},
-            MapAssetState::Loading => {
-                // Unload the scene
+            MapAssetState::ChangingMap => {
+                // Despawn the scene
                 for entity in unload_query.iter() {
                     commands.entity(entity).despawn();
                 }
