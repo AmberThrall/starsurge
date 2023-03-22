@@ -1,5 +1,6 @@
 use bevy::{
     prelude::*,
+    scene::{DynamicScene, DynamicEntity},
 };
 use bevy_common_assets::ron::RonAssetPlugin;
 use super::{
@@ -109,7 +110,7 @@ pub struct MapData {
     /// Terrain map data
     pub terrain: MapTerrainData,
     /// File name of a bevy dynamic scene file.
-    pub scene_path: String,
+    pub entities: Vec<DynamicEntity>,
 }
 
 pub struct MapPlugin;
@@ -158,10 +159,12 @@ fn map_loader(
                     ));
                 
                     // Load the scene
-                    commands.spawn(DynamicSceneBundle {
-                        scene: asset_server.load(&data.scene_path),
-                        ..default()
-                    });
+                    // commands.spawn(DynamicSceneBundle {
+                    //     scene: DynamicScene {
+
+                    //     },
+                    //     ..default()
+                    // });
 
                     // Update the state and clean up
                     map.name = data.name.clone();
