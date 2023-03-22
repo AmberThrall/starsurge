@@ -14,6 +14,12 @@ impl Plugin for BevyConfigPlugin {
             ..default()
         });
 
+        #[cfg(feature = "dev")]
+        let default_plugins = default_plugins.set(AssetPlugin {
+            watch_for_changes: true,
+            ..default()
+        });
+
         app.add_plugins(default_plugins)
             .insert_resource(Msaa::Sample4)
             .insert_resource(ClearColor(Color::rgb(0.4, 0.4, 0.4)));

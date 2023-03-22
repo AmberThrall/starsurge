@@ -7,17 +7,22 @@ use starsurge::*;
 mod camera;
 use camera::*;
 
+#[cfg(feature = "dev")]
 mod dev;
+#[cfg(feature = "dev")]
 use dev::*;
 
 fn main() {
-    App::new()
-        .add_plugin(GamePlugin)
+    let mut app = App::new();
+    app.add_plugin(GamePlugin)
         .add_plugin(FrameTimeDiagnosticsPlugin::default())
         .add_plugin(CameraPlugin)
-        .add_plugin(DevPlugin)
-        .add_startup_system(setup)
-        .run();
+        .add_startup_system(setup);
+    
+    #[cfg(feature = "dev")]
+    app.add_plugin(DevPlugin);
+
+    app.run();
 }
 
 fn setup(
