@@ -4,11 +4,11 @@ use crate::Position;
 use crate::Angle;
 
 /// Collection of game objects
-#[derive(serde::Deserialize, Debug, Default)]
+#[derive(Component, serde::Deserialize, Debug, Default, Clone)]
 pub enum GameObject {
     #[default]
     Empty,
-    Decor(String)
+    Decor(String),
 }
 
 #[derive(Debug, Default)]
@@ -38,6 +38,7 @@ fn spawner_system(
         }.id();
 
         commands.entity(entity).insert((
+            ev.object.clone(),
             ev.position,
             Angle(ev.angle),
         ));

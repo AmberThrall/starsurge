@@ -8,6 +8,7 @@
     objects: [
         (
             object: Decor("models/tree_pineTallD_detailed.glb"),
+            position: (x: 3, y: 0),
         ),
         (
             object: Decor("models/tree_pineTallD_detailed.glb"),
@@ -21,6 +22,167 @@
             object: Decor("models/tree_oak.glb"),
             position: (x: 1, y: 2),
             angle: 30.0,
+        ),
+        // Front wall
+        (
+            object: Decor("models/wallWood.glb"),
+            position: (x: -2, y: -2),
+            angle: 90.0,
+        ),
+        (
+            object: Decor("models/wallWoodWindowGlass.glb"),
+            position: (x: -1, y: -2),
+            angle: 90.0,
+        ),
+        (
+            object: Decor("models/wallWoodDoor.glb"),
+            position: (x: 0, y: -2),
+            angle: 90.0,
+        ),
+        (
+            object: Decor("models/wallWoodWindowGlass.glb"),
+            position: (x: 1, y: -2),
+            angle: 90.0,
+        ),
+        (
+            object: Decor("models/wallWood.glb"),
+            position: (x: 2, y: -2),
+            angle: 90.0,
+        ),
+        // Left wall
+        (
+            object: Decor("models/wallWood.glb"),
+            position: (x: -2, y: -2),
+        ),
+        (
+            object: Decor("models/wallWood.glb"),
+            position: (x: -2, y: -3),
+        ),
+        (
+            object: Decor("models/wallWood.glb"),
+            position: (x: -2, y: -3, layer: 1),
+        ),
+        (
+            object: Decor("models/wallWood.glb"),
+            position: (x: -2, y: -4),
+        ),
+        // Right wall
+        (
+            object: Decor("models/wallWood.glb"),
+            position: (x: 2, y: -2),
+            angle: 180.0,
+        ),
+        (
+            object: Decor("models/wallWood.glb"),
+            position: (x: 2, y: -3),
+            angle: 180.0,
+        ),
+        (
+            object: Decor("models/wallWood.glb"),
+            position: (x: 2, y: -3, layer: 1),
+            angle: 180.0,
+        ),
+        (
+            object: Decor("models/wallWood.glb"),
+            position: (x: 2, y: -4),
+            angle: 180.0,
+        ),
+        // Back wall
+        (
+            object: Decor("models/wallWood.glb"),
+            position: (x: -2, y: -4),
+            angle: -90.0,
+        ),
+        (
+            object: Decor("models/wallWood.glb"),
+            position: (x: -1, y: -4),
+            angle: -90.0,
+        ),
+        (
+            object: Decor("models/wallWood.glb"),
+            position: (x: 0, y: -4),
+            angle: -90.0,
+        ),
+        (
+            object: Decor("models/wallWood.glb"),
+            position: (x: 1, y: -4),
+            angle: -90.0,
+        ),
+        (
+            object: Decor("models/wallWood.glb"),
+            position: (x: 2, y: -4),
+            angle: -90.0,
+        ),
+        // Roof
+        (
+            object: Decor("models/roofHigh.glb"),
+            position: (x: -2, y: -2, layer: 1),
+            angle: -90.0,
+        ),
+        (
+            object: Decor("models/roofHigh.glb"),
+            position: (x: -1, y: -2, layer: 1),
+            angle: -90.0,
+        ),
+        (
+            object: Decor("models/roofHigh.glb"),
+            position: (x: 0, y: -2, layer: 1),
+            angle: -90.0,
+        ),
+        (
+            object: Decor("models/roofHigh.glb"),
+            position: (x: 1, y: -2, layer: 1),
+            angle: -90.0,
+        ),
+        (
+            object: Decor("models/roofHigh.glb"),
+            position: (x: 2, y: -2, layer: 1),
+            angle: -90.0,
+        ),
+        (
+            object: Decor("models/roofHigh.glb"),
+            position: (x: -2, y: -4, layer: 1),
+            angle: 90.0,
+        ),
+        (
+            object: Decor("models/roofHigh.glb"),
+            position: (x: -1, y: -4, layer: 1),
+            angle: 90.0,
+        ),
+        (
+            object: Decor("models/roofHigh.glb"),
+            position: (x: 0, y: -4, layer: 1),
+            angle: 90.0,
+        ),
+        (
+            object: Decor("models/roofHigh.glb"),
+            position: (x: 1, y: -4, layer: 1),
+            angle: 90.0,
+        ),
+        (
+            object: Decor("models/roofHigh.glb"),
+            position: (x: 2, y: -4, layer: 1),
+            angle: 90.0,
+        ),
+        (
+            object: Decor("models/roofHighFlat.glb"),
+            position: (x: -2, y: -3, layer: 2),
+        ),
+        (
+            object: Decor("models/roofHighFlat.glb"),
+            position: (x: -1, y: -3, layer: 2),
+        ),
+        (
+            object: Decor("models/roofHighFlat.glb"),
+            position: (x: 0, y: -3, layer: 2),
+        ),
+        (
+            object: Decor("models/roofHighFlat.glb"),
+            position: (x: 1, y: -3, layer: 2),
+        ),
+        (
+            object: Decor("models/roofHighFlat.glb"),
+            position: (x: 2, y: -3, layer: 2),
         ),
     ]
 )

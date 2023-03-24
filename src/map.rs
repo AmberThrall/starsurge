@@ -9,6 +9,8 @@ use crate::{
     SpawnEvent,
 };
 
+pub const LAYER_HEIGHT: f32 = 1.0;
+
 /// Comopnent to mark entities that should not be unloaded on map change.
 #[derive(Component, Debug)]
 pub struct DontUnload;
@@ -20,12 +22,14 @@ pub struct DontUnload;
 pub struct Position {
     pub x: i32,
     pub y: i32,
+    #[serde(default)]
+    pub layer: i32,
 }
 
 impl Position {
-    pub fn new(x: i32, y: i32) -> Self {
+    pub fn new(x: i32, y: i32, layer: i32) -> Self {
         Self {
-            x, y,
+            x, y, layer,
         }
     }
 }
@@ -253,7 +257,11 @@ fn handle_positions(
     if let Ok(terrain) = terrains.get_single() {
         for (mut transform, pos) in query.iter_mut() {
             let world_pos = terrain.get_world_position(pos);
-            transform.translation = world_pos;
+            transform.translation = Vec3::new(
+                world_pos.x,
+                world_pos.y + (pos.layer as f32) * LAYER_HEIGHT,
+                world_pos.z,
+            );
         }
     }
 }
@@ -262,6 +270,6 @@ fn handle_angles(
     mut query: Query<(&mut Transform, &Angle)>
 ) {
     for (mut transform, angle) in query.iter_mut() {
-        transform.rotation = Quat::from_rotation_y(angle.0);
+        transform.rotation = Quat::from_rotation_y(angle.0.to_radians());
     }
 }

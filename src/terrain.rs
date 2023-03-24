@@ -2,7 +2,9 @@ use bevy::{
     prelude::*,
     render::{mesh::Indices, render_resource::PrimitiveTopology},
 };
-use super::Position;
+use crate::{
+    Position, LAYER_HEIGHT, raycast_mesh,
+};
 
 pub const CELL_SIZE: Vec3 = Vec3::ONE;
 
@@ -120,6 +122,20 @@ impl Terrain {
             size,
             data,
         }
+    }
+
+    /// Convert a world position to a grid position.
+    pub fn get_grid_position(&self, vec: &Vec3) -> Position {
+        let x = (vec.x / CELL_SIZE.x).floor() as i32;
+        let y = (vec.z / CELL_SIZE.z).floor() as i32;
+        
+        let vx = (self.size.width / 2) as i32 + x;
+        let vy = (self.size.height / 2) as i32 + y;
+
+        let h = vec.y - self.get_vertex_position(vx as usize, vy as usize).y;
+        let layer = (h / LAYER_HEIGHT).floor() as i32;
+
+        Position::new(x, y, layer)
     }
 
     /// Convert a grid position to a world position.
@@ -269,6 +285,7 @@ fn build_terrains(
                 // remove the TerrainBuilder and insert the terrain.
                 commands.entity(entity)
                     .insert(Terrain::from_images(heightmap_img, colormap_img, builder.max_altitude))
+                    .insert(raycast_mesh())
                     .remove::<TerrainBuilder>();
 
                 // We no longer need the images. unload them
