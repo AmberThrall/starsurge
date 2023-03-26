@@ -20,6 +20,7 @@ bevy_common_assets = { version="0.6.0", features=["ron"] }
 bevy_console = "0.7.0"
 bevy_egui = "0.20.1"
 bevy_mod_raycast = "0.8.0"
+bevy_prototype_debug_lines = { version = "0.10.1", features = ["3d"] }
 clap = "4.1.10"
 serde = "1.0.158"
 

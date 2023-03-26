@@ -6,6 +6,8 @@ pub mod map;
 pub mod map_registry;
 pub mod spawner;
 pub mod input;
+pub mod ai;
+pub mod movement;
 
 pub use crate::bevy_config::BevyConfigPlugin;
 pub use crate::terrain::*;
@@ -13,6 +15,8 @@ pub use crate::map::*;
 pub use crate::map_registry::*;
 pub use crate::spawner::*;
 pub use crate::input::*;
+pub use crate::ai::*;
+pub use crate::movement::*;
 
 pub struct GamePlugin;
 
@@ -27,6 +31,8 @@ impl Plugin for GamePlugin {
             .add_plugin(MapPlugin)
             .add_plugin(TerrainPlugin)
             .add_plugin(SpawnerPlugin)
+            .add_plugin(MovementPlugin)
+            .add_plugin(AiPlugin)
             .insert_resource(map_registry);
     }
 }

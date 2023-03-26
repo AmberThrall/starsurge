@@ -9,14 +9,12 @@ use crate::{
     SpawnEvent,
 };
 
-pub const LAYER_HEIGHT: f32 = 1.0;
-
 /// Comopnent to mark entities that should not be unloaded on map change.
 #[derive(Component, Debug)]
 pub struct DontUnload;
 
 /// Component for terrain quad position. (0,0) is the center of the map.
-#[derive(Component, Debug, Reflect, serde::Deserialize, bevy::reflect::TypeUuid, Default, Copy, Clone, PartialEq, Eq)]
+#[derive(Component, Debug, Reflect, serde::Deserialize, bevy::reflect::TypeUuid, Default, Copy, Clone, PartialEq, Eq, Hash)]
 #[reflect(Component)]
 #[uuid = "48613d5d-f1d2-46b8-8d9f-026c27fe8700"]
 pub struct Position {
@@ -27,12 +25,31 @@ pub struct Position {
 }
 
 impl Position {
+    pub const ZERO: Position = Position { x: 0, y: 0, layer: 0 };
+
     pub fn new(x: i32, y: i32, layer: i32) -> Self {
         Self {
             x, y, layer,
         }
     }
+
+    pub fn distance_squared(&self, other: &Position) -> u32 {
+        ((self.x - other.x) * (self.x - other.x) +
+            (self.y - other.y) * (self.y - other.y) +
+            (self.layer - other.layer) * (self.layer - other.layer)) as u32
+    }
+
+    pub fn distance(&self, other: &Position) -> f32 {
+        (self.distance_squared(other) as f32).sqrt()
+    }
 }
+
+
+/// Component that moves an entity to a specific position only once.
+#[derive(Component, Debug, Reflect, serde::Deserialize, bevy::reflect::TypeUuid, Default, Copy, Clone, PartialEq, Eq)]
+#[reflect(Component)]
+#[uuid = "f99dfd68-64bb-4abe-b44a-edfb07e83e80"]
+pub struct SpawnPosition(pub Position);
 
 /// Component for an entities angle about the y-axis.
 #[derive(Component, Debug, Reflect, Default, Copy, Clone, PartialEq)]
@@ -167,6 +184,7 @@ impl Plugin for MapPlugin {
             .add_system(map_loader)
             .add_system(load_models)
             .add_system(handle_positions)
+            .add_system(handle_spawn_positions)
             .add_system(handle_angles);
     }
 }
@@ -257,11 +275,23 @@ fn handle_positions(
     if let Ok(terrain) = terrains.get_single() {
         for (mut transform, pos) in query.iter_mut() {
             let world_pos = terrain.get_world_position(pos);
-            transform.translation = Vec3::new(
-                world_pos.x,
-                world_pos.y + (pos.layer as f32) * LAYER_HEIGHT,
-                world_pos.z,
-            );
+            transform.translation = world_pos;
+        }
+    }
+}
+
+fn handle_spawn_positions(
+    mut commands: Commands,
+    terrains: Query<&Terrain>,
+    mut query: Query<(Entity, &mut Transform, &SpawnPosition)>
+) {
+    if let Ok(terrain) = terrains.get_single() {
+        for (entity, mut transform, pos) in query.iter_mut() {
+            let world_pos = terrain.get_world_position(&pos.0);
+            transform.translation = world_pos;
+
+            // Remove the SpawnPosition component.
+            commands.entity(entity).remove::<SpawnPosition>();
         }
     }
 }

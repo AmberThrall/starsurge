@@ -3,10 +3,11 @@ use bevy::{
     render::{mesh::Indices, render_resource::PrimitiveTopology},
 };
 use crate::{
-    Position, LAYER_HEIGHT, raycast_mesh,
+    Position, raycast_mesh,
 };
 
 pub const CELL_SIZE: Vec3 = Vec3::ONE;
+pub const LAYER_HEIGHT: f32 = 1.0;
 
 #[derive(Resource)]
 pub struct TerrainMaterial(Handle<StandardMaterial>);
@@ -154,7 +155,7 @@ impl Terrain {
 
         let avg_y = (vert_pos[0].y + vert_pos[1].y + vert_pos[2].y + vert_pos[3].y) / 4.0;
 
-        Vec3::new(middle.x, avg_y, middle.z)
+        Vec3::new(middle.x, avg_y + (pos.layer as f32) * LAYER_HEIGHT, middle.z)
     }
 
     /// Get the world position (including y) of a specific vertex.

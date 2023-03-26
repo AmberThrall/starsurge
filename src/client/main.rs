@@ -12,6 +12,9 @@ mod dev;
 #[cfg(feature = "dev")]
 use dev::*;
 
+#[derive(Component)]
+pub struct Player;
+
 fn main() {
     let mut app = App::new();
     app.add_plugin(GamePlugin)
@@ -28,6 +31,7 @@ fn main() {
 
 fn setup(
     mut commands: Commands,
+    mut meshes: ResMut<Assets<Mesh>>,
     asset_server: Res<AssetServer>,
 ) {
     // Light
@@ -56,12 +60,37 @@ fn setup(
 
     // Map
     commands.insert_resource(Map::from_handle(asset_server.load("maps/test_map.map.ron")));
+
+    // Player
+    commands.spawn((
+        PbrBundle {
+            mesh: meshes.add(shape::Capsule {
+                radius: 0.15,
+                depth: 1.0,
+                ..default()
+            }.into()),
+            ..default()
+        },
+        Player,
+        SpawnPosition(Position::ZERO),
+        Angle(0.0),
+        PathFollower::default(),
+        PathBuilder {
+            target: Position::new(3, 3, 0),
+        },
+        DontUnload,
+    ));
 }
 
 fn click_response(
+    mut commands: Commands,
+    player: Query<Entity, With<Player>>,
     mut click_event: EventReader<MouseClickEvent>,
 ) {
     for ev in click_event.iter() {
         info!("Just clicked: {:?}", ev);
+        commands.entity(player.single()).insert(PathBuilder {
+            target: ev.position,
+        });
     }
 }

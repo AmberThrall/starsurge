@@ -1,7 +1,7 @@
 use bevy::prelude::*;
-use crate::Model;
-use crate::Position;
-use crate::Angle;
+use crate::{
+    Model, Position, Angle, Block,
+};
 
 /// Collection of game objects
 #[derive(Component, serde::Deserialize, Debug, Default, Clone)]
@@ -9,6 +9,7 @@ pub enum GameObject {
     #[default]
     Empty,
     Decor(String),
+    DecorBlock(String),
 }
 
 #[derive(Debug, Default)]
@@ -35,6 +36,7 @@ fn spawner_system(
         let entity = match &ev.object {
             GameObject::Empty => commands.spawn_empty(),
             GameObject::Decor(model_path) => commands.spawn(Model::new(&model_path)),
+            GameObject::DecorBlock(model_path) => commands.spawn((Model::new(&model_path), Block)),
         }.id();
 
         commands.entity(entity).insert((
